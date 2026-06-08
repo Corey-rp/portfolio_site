@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About | Corey Richards-Persad</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .about-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .about-body p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin-bottom: 18px;
+    }
+
+    .about-body p:last-child { margin-bottom: 0; }
+
+    .about-photo {
+      width: 100%;
+      border-radius: var(--radius);
+      object-fit: cover;
+      object-position: center top;
+      aspect-ratio: 3/4;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+    }
+
+    .skills-section { padding-top: 0; }
+
+    .skills-group {
+      margin-bottom: 28px;
+    }
+
+    .skills-group-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .skills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .edu-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .edu-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .edu-school {
+      font-weight: 600;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .edu-degree {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .edu-awards {
+      margin-top: 6px;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 600px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+      .about-photo {
+        max-width: 240px;
+        margin: 0 auto;
+        display: block;
+        aspect-ratio: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">CRP</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html" class="active">About</a>
+        <a href="projects.html">Projects</a>
+        <a href="resume.html">Resume</a>
+        <button class="theme-btn" id="themeToggle" onclick="toggleMode()">🌙</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+    <div class="container">
+
+      <section>
+        <span class="section-label">About Me</span>
+        <h1 style="margin-bottom:40px;">The person<br><em style="color:var(--accent); font-style:italic;">behind the code</em></h1>
+
+        <div class="about-grid">
+          <div class="about-body">
+            <p>
+              I'm <strong>Corey Richards-Persad</strong>, a Computer Science student at Georgia State University with a passion for building software that solves real problems. I'm not just learning concepts in the classroom — I'm shipping actual products.
+            </p>
+            <p>
+              My most recent project is the <strong>MSA Secure Pickup Package</strong>, a full three-app system I built from scratch for the Morehouse College STEM Achievers Summer Program. It handles everything from parent registration and QR code generation to staff scanning and SMS alerts — all deployed and live.
+            </p>
+            <p>
+              I bring a professional background in customer service, team leadership, and operations, which shapes how I think about user experience and communication. I know what it's like to work with real users under pressure, and that mindset carries into every app I build.
+            </p>
+            <p>
+              My goal is to land a role where I can grow as a developer, contribute to meaningful products, and keep building things that make a difference.
+            </p>
+            <div style="margin-top:24px; display:flex; gap:12px; flex-wrap:wrap;">
+              <a href="resume.html" class="btn btn-primary">View Resume</a>
+              <a href="mailto:coreyrich1210@gmail.com" class="btn btn-outline">Get in Touch</a>
+            </div>
+          </div>
+
+          <img src="CRP HEADSHOT RIGHT_SHOULDER.jpg" alt="Corey Richards-Persad" class="about-photo">
+        </div>
+      </section>
+
+      <hr class="divider">
+
+      <!-- Skills -->
+      <section class="skills-section">
+        <span class="section-label">Skills</span>
+        <h2 style="margin-bottom:28px;">Technologies & Tools</h2>
+
+        <div class="skills-group">
+          <div class="skills-group-title">Languages</div>
+          <div class="skills-row">
+            <span class="tag">Python</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">C</span>
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">SQL</span>
+          </div>
+        </div>
+
+        <div class="skills-group">
+          <div class="skills-group-title">Frameworks & Platforms</div>
+          <div class="skills-row">
+            <span class="tag">React</span>
+            <span class="tag">Supabase</span>
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">Cloudflare Pages</span>
+            <span class="tag">Netlify</span>
+          </div>
+        </div>
+
+        <div class="skills-group">
+          <div class="skills-group-title">APIs & Services</div>
+          <div class="skills-row">
+            <span class="tag">Twilio SMS</span>
+            <span class="tag">EmailJS</span>
+            <span class="tag">NOAA / NWS API</span>
+            <span class="tag">REST APIs</span>
+          </div>
+        </div>
+
+        <div class="skills-group">
+          <div class="skills-group-title">Tools</div>
+          <div class="skills-row">
+            <span class="tag">Git</span>
+            <span class="tag">VS Code</span>
+            <span class="tag">Zendesk</span>
+          </div>
+        </div>
+      </section>
+
+      <hr class="divider">
+
+      <!-- Education -->
+      <section>
+        <span class="section-label">Education</span>
+        <h2 style="margin-bottom:28px;">Academic Background</h2>
+
+        <div class="edu-card">
+          <div class="edu-icon">🎓</div>
+          <div>
+            <div class="edu-school">Georgia State University — Atlanta, GA</div>
+            <div class="edu-degree">B.S. Computer Science &nbsp;·&nbsp; Expected Apr 2026</div>
+            <div class="edu-degree" style="margin-top:4px;">Relevant Coursework: Data Structures and Algorithms</div>
+            <div class="edu-awards">
+              <span class="tag tag-accent">Hope Scholarship</span>
+              <span class="tag tag-accent">Dean's List</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="edu-card">
+          <div class="edu-icon">📚</div>
+          <div>
+            <div class="edu-school">Georgia Military College</div>
+            <div class="edu-degree">General Studies</div>
+            <div class="edu-awards">
+              <span class="tag tag-accent">Hope Scholarship</span>
+              <span class="tag tag-accent">Dean's List</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <footer style="border-top: 1px solid var(--border); padding: 28px 0; margin-top: auto;">
+    <div class="container" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+      <span style="font-size:0.85rem; color:var(--text-muted);">© 2025 Corey Richards-Persad</span>
+      <div style="display:flex; gap:16px;">
+        <a href="mailto:coreyrich1210@gmail.com" style="font-size:0.85rem; color:var(--text-muted);">Email</a>
+        <a href="https://www.linkedin.com/in/corey-richards-persad/" target="_blank" style="font-size:0.85rem; color:var(--text-muted);">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    if (localStorage.getItem("theme") === "dark") {
+      document.body.classList.add("dark-mode");
+      document.getElementById("themeToggle").textContent = "🌞";
+    }
+    function toggleMode() {
+      document.body.classList.toggle("dark-mode");
+      const isDark = document.body.classList.contains("dark-mode");
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+      document.getElementById("themeToggle").textContent = isDark ? "🌞" : "🌙";
+    }
+  </script>
+
+</body>
+</html>

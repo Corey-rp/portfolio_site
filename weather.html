@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather App | Corey Richards-Persad</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .weather-section { padding-top: 40px; }
+    .search-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+    .search-row input {
+      flex: 1;
+      min-width: 200px;
+      padding: 11px 16px;
+      font-size: 0.95rem;
+      font-family: 'DM Sans', sans-serif;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-row input:focus { border-color: var(--accent); }
+    .search-row input::placeholder { color: var(--text-muted); }
+    #location {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
+    #forecast {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 16px;
+    }
+    .fc-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+    }
+    .fc-card h3 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .fc-period {
+      margin-bottom: 10px;
+      font-size: 0.875rem;
+    }
+    .fc-period strong { color: var(--text); font-size: 0.8rem; }
+    .fc-period p { color: var(--text-muted); margin-top: 2px; font-size: 0.85rem; }
+    .fc-wind { font-size: 0.78rem; color: var(--text-muted); margin-top: 10px; border-top: 1px solid var(--border); padding-top: 8px; }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">CRP</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="projects.html">Projects</a>
+        <a href="resume.html">Resume</a>
+        <button class="theme-btn" id="themeToggle" onclick="toggleMode()">🌙</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+    <div class="container">
+      <section class="weather-section">
+        <span class="section-label">Project</span>
+        <h1 style="margin-bottom:8px;">🌤️ Weather Forecast</h1>
+        <p style="margin-bottom:28px;">Powered by NOAA/NWS — search any U.S. city or zip code.</p>
+
+        <div class="search-row">
+          <input type="text" id="locationInput" placeholder="Enter city or zip (e.g., Atlanta or 30303)">
+          <button class="btn btn-primary" onclick="getForecast()">Get Forecast</button>
+        </div>
+
+        <div id="location"></div>
+        <div id="forecast"></div>
+      </section>
+    </div>
+  </div>
+
+  <footer style="border-top: 1px solid var(--border); padding: 28px 0; margin-top: 60px;">
+    <div class="container" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+      <a href="projects.html" style="font-size:0.85rem; color:var(--text-muted);">← Back to Projects</a>
+    </div>
+  </footer>
+
+  <script>
+    if (localStorage.getItem("theme") === "dark") {
+      document.body.classList.add("dark-mode");
+      document.getElementById("themeToggle").textContent = "🌞";
+    }
+    function toggleMode() {
+      document.body.classList.toggle("dark-mode");
+      const isDark = document.body.classList.contains("dark-mode");
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+      document.getElementById("themeToggle").textContent = isDark ? "🌞" : "🌙";
+    }
+
+    document.getElementById("locationInput").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") getForecast();
+    });
+
+    const conditionEmojis = [
+      { keywords: ["snow", "flurries"], emoji: "❄️" },
+      { keywords: ["rain", "shower", "drizzle"], emoji: "🌧️" },
+      { keywords: ["thunder", "storm"], emoji: "⛈️" },
+      { keywords: ["sun", "clear"], emoji: "☀️" },
+      { keywords: ["cloud", "overcast"], emoji: "☁️" },
+      { keywords: ["wind", "breezy"], emoji: "💨" },
+      { keywords: ["fog", "haze", "mist"], emoji: "🌫️" }
+    ];
+    function getEmoji(desc) {
+      const lower = desc.toLowerCase();
+      for (let c of conditionEmojis) {
+        if (c.keywords.some(k => lower.includes(k))) return c.emoji;
+      }
+      return "🌤️";
+    }
+
+    async function getForecast() {
+      const input = document.getElementById("locationInput").value.trim();
+      const forecastEl = document.getElementById("forecast");
+      const locationEl = document.getElementById("location");
+      forecastEl.innerHTML = "";
+      locationEl.innerHTML = "";
+      if (!input) { forecastEl.innerHTML = "<p>Please enter a city or zip code.</p>"; return; }
+      try {
+        locationEl.innerHTML = "Fetching forecast...";
+        const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(input)}&count=1`);
+        const geoData = await geoRes.json();
+        if (!geoData.results || !geoData.results.length) {
+          locationEl.innerHTML = "";
+          forecastEl.innerHTML = "<p>Location not found. Try a different city name or zip.</p>"; return;
+        }
+        const { latitude, longitude, name, admin1 } = geoData.results[0];
+        locationEl.innerHTML = `📍 Forecast for <strong>${name}, ${admin1}</strong>`;
+        const pointRes = await fetch(`https://api.weather.gov/points/${latitude},${longitude}`);
+        const pointData = await pointRes.json();
+        const forecastRes = await fetch(pointData.properties.forecast);
+        const forecastData = await forecastRes.json();
+        forecastEl.innerHTML = "";
+        for (let i = 0; i < forecastData.properties.periods.length - 1; i += 2) {
+          const d = forecastData.properties.periods[i];
+          const n = forecastData.properties.periods[i + 1];
+          forecastEl.innerHTML += `
+          <div class="fc-card">
+            <h3>${d.name.replace(" Night","")}</h3>
+            <div class="fc-period">
+              <strong>${getEmoji(d.shortForecast)} Day</strong>
+              <p>${d.temperature}°${d.temperatureUnit} · ${d.shortForecast}</p>
+            </div>
+            <div class="fc-period">
+              <strong>${getEmoji(n.shortForecast)} Night</strong>
+              <p>${n.temperature}°${n.temperatureUnit} · ${n.shortForecast}</p>
+            </div>
+            <div class="fc-wind">💨 ${d.windSpeed} ${d.windDirection}</div>
+          </div>`;
+        }
+      } catch(err) {
+        locationEl.innerHTML = "";
+        forecastEl.innerHTML = "<p>Error retrieving forecast. Please try again.</p>";
+      }
+    }
+  </script>
+</body>
+</html>
